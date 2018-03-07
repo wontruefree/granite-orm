@@ -1,3 +1,4 @@
+require "inflector/core_ext"
 require "./associations"
 require "./callbacks"
 require "./fields"

@@ -29,11 +29,14 @@ module Granite::ORM::Table
 
   macro __process_table
     {% name_space = @type.name.gsub(/::/, "_").underscore.id %}
-    {% table_name = SETTINGS[:table_name] || name_space + "s" %}
     {% primary_name = PRIMARY[:name] %}
     {% primary_type = PRIMARY[:type] %}
-
-    @@table_name = "{{table_name}}"
+    
+    {% if SETTINGS[:table_name] %}
+    @@table_name = "{{SETTINGS[:table_name]}}"
+    {% else %}
+    @@table_name = "{{name_space}}".pluralize
+    {% end %}
     @@primary_name = "{{primary_name}}"
 
     property? {{primary_name}} : Union({{primary_type.id}} | Nil)

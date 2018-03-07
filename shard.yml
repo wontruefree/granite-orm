@@ -12,6 +12,10 @@ dependencies:
     github: crystal-lang/crystal-db
     version: ~> 0.5.0
 
+  inflector:
+    github: phoffer/inflector.cr
+    version: ~> 0.1.8
+    
 development_dependencies:
   mysql:
     github: crystal-lang/crystal-mysql

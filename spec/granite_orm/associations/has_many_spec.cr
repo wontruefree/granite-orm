@@ -22,7 +22,7 @@ module {{adapter.capitalize.id}}
       class3.name = "Test class 3"
       class3.save
 
-      teacher.klasss.size.should eq 2
+      teacher.klasses.size.should eq 2
     end
 
     describe "#has_many, through:" do
@@ -62,7 +62,7 @@ module {{adapter.capitalize.id}}
         enrollment3.student = unrelated_student
         enrollment3.save
 
-        student.klasss.map(&.id).compact.sort.should eq [klass1.id, klass2.id].compact.sort
+        student.klasses.map(&.id).compact.sort.should eq [klass1.id, klass2.id].compact.sort
 
         klass2.students.map(&.id).compact.sort.should eq [student.id, unrelated_student.id].compact.sort
       end

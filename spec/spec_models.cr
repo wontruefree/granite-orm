@@ -41,7 +41,7 @@ end
 
       has_many :students
 
-      validate :name, "Name cannot be blank" do |parent| 
+      validate :name, "Name cannot be blank" do |parent|
         !parent.name.to_s.blank?
       end
 
@@ -64,7 +64,7 @@ end
 
       field name : String
 
-      has_many :klasss
+      has_many :klasses
 
       def self.drop_and_create
         exec("DROP TABLE IF EXISTS #{ quoted_table_name };")
@@ -84,7 +84,7 @@ end
       field name : String
 
       has_many :enrollments
-      has_many :klasss, through: :enrollments
+      has_many :klasses, through: :enrollments
 
       def self.drop_and_create
         exec("DROP TABLE IF EXISTS #{ quoted_table_name };")
@@ -100,7 +100,7 @@ end
     class Klass < Granite::ORM::Base
       primary id : Int64
       adapter {{ adapter_literal }}
-      table_name klasss
+      table_name klasses
       field name : String
 
       belongs_to :teacher
@@ -161,7 +161,7 @@ end
     class Nation::County < Granite::ORM::Base
       adapter {{ adapter_literal }}
       primary id : Int64
-      table_name nation_countys
+      table_name nation_counties
 
       field name : String
 
