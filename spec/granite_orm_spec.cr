@@ -23,6 +23,10 @@ class WebSite < Granite::ORM::Base
   adapter pg
   primary custom_id : Int32
   field name : String
+
+  validate :name, "Name cannot be blank", ->(s : WebSite) do
+    !s.name.to_s.blank?
+  end
 end
 
 describe Granite::ORM::Base do
@@ -103,6 +107,25 @@ describe Granite::ORM::Base do
       s = WebSite.new(name: "Hacker News")
       s.custom_id = 3
       s.to_json.should eq %({"custom_id":3,"name":"Hacker News"})
+    end
+  end
+
+  describe "validating fields" do
+    context "without a name" do
+      it "is not valid" do
+        s = WebSite.new(name: "")
+        s.valid?.should eq false
+        s.errors.first.message.should eq "Name cannot be blank"
+      end
+    end
+
+    context "when name is present" do
+      it "is valid" do
+        s = WebSite.new(name: "Hacker News")
+
+        s.valid?.should eq true
+        s.errors.empty?.should eq true
+      end
     end
   end
 end

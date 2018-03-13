@@ -28,14 +28,35 @@ module Granite::ORM::Table
   end
 
   macro __process_table
-    {% name_space = @type.name.gsub(/::/, "_").downcase.id %}
+    {% name_space = @type.name.gsub(/::/, "_").underscore.id %}
     {% table_name = SETTINGS[:table_name] || name_space + "s" %}
     {% primary_name = PRIMARY[:name] %}
     {% primary_type = PRIMARY[:type] %}
-    # Table Name
+
     @@table_name = "{{table_name}}"
     @@primary_name = "{{primary_name}}"
-    # Create the primary key
-    property {{primary_name}} : Union({{primary_type.id}} | Nil)
+
+    property? {{primary_name}} : Union({{primary_type.id}} | Nil)
+
+    def {{primary_name}}
+      raise {{@type.name.stringify}} + "#" + {{primary_name.stringify}} + " cannot be nil" if @{{primary_name}}.nil?
+      @{{primary_name}}.not_nil!
+    end
+
+    def self.table_name
+      @@table_name
+    end
+
+    def self.primary_name
+      @@primary_name
+    end
+
+    def self.quoted_table_name
+      @@adapter.quote(table_name)
+    end
+
+    def self.quote(column_name)
+      @@adapter.quote(column_name)
+    end
   end
 end

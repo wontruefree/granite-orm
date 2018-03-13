@@ -1,5 +1,5 @@
-require "./spec_helper"
-require "../src/adapter/pg"
+require "../spec_helper"
+require "../../src/adapter/pg"
 
 class Parent < Granite::ORM::Base
   adapter pg

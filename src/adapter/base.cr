@@ -31,6 +31,10 @@ abstract class Granite::Adapter::Base
     yield @database
   end
 
+  def log(query : String, params = [] of String) : Nil
+    Granite::ORM.settings.logger.info "#{query}: #{params}"
+  end
+
   # remove all rows from a table and reset the counter on the id.
   abstract def clear(table_name)
 
@@ -54,6 +58,15 @@ abstract class Granite::Adapter::Base
   # method used to replace the environment variable if exists
   private def replace_env_vars(url)
     Granite::Adapter::Base.env(url)
+  end
+
+  # Use macro in order to read a constant defined in each subclasses.
+  macro inherited
+    # quotes table and column names
+    def quote(name : String) : String
+      char = QUOTING_CHAR
+      char + name.gsub(char, "#{char}#{char}") + char
+    end
   end
 
   # class level method so we can test it

@@ -3,7 +3,9 @@
 [Amber](https://github.com/Amber-Crystal/amber) is a web framework written in
 the [Crystal](https://github.com/manastech/crystal) language.
 
-This project is to provide an ORM Model in Crystal.
+This project is to provide an ORM in Crystal.
+
+[![Build Status](https://img.shields.io/travis/amberframework/granite-orm.svg?maxAge=360)](https://travis-ci.org/amberframework/granite-orm)
 
 ## Installation
 
@@ -124,28 +126,34 @@ end
 #### Find First
 
 ```crystal
-post = Post.first
+post = Post.first?
 if post
   puts post.name
 end
+
+post = Post.first # raises when no records exist
 ```
 
 #### Find
 
 ```crystal
-post = Post.find 1
+post = Post.find? 1
 if post
   puts post.name
 end
+
+post = Post.find 1 # raises when no records found
 ```
 
 #### Find By
 
 ```crystal
-post = Post.find_by :slug, "example_slug"
+post = Post.find_by? :slug, "example_slug"
 if post
   puts post.name
 end
+
+post = Post.find_by :slug, "foo" # raises when no records found
 ```
 
 #### Insert
@@ -283,7 +291,7 @@ CREATE TABLE posts (
   updated_at TIMESTAMP
 );
 
-CREATE INDEX 'user_id_idx' ON TABLE posts (user_id);
+CREATE INDEX 'user_id_idx' ON posts (user_id);
 ```
 
 #### Many to Many

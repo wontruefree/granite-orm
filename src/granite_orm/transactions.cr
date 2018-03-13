@@ -10,6 +10,8 @@ module Granite::ORM::Transactions
     # will call the update method, otherwise it will call the create method.
     # This will update the timestamps apropriately.
     def save
+      return false unless valid?
+
       begin
         __run_before_save
         if value = @{{primary_name}}
@@ -28,9 +30,9 @@ module Granite::ORM::Transactions
         end
         __run_after_save
         return true
-      rescue ex
+      rescue ex : DB::Error
         if message = ex.message
-          puts "Save Exception: #{message}"
+          Granite::ORM.settings.logger.error "Save Exception: #{message}"
           errors << Granite::ORM::Error.new(:base, message)
         end
         return false
@@ -44,9 +46,9 @@ module Granite::ORM::Transactions
         @@adapter.delete(@@table_name, @@primary_name, {{primary_name}})
         __run_after_destroy
         return true
-      rescue ex
+      rescue ex : DB::Error
         if message = ex.message
-          puts "Destroy Exception: #{message}"
+          Granite::ORM.settings.logger.error "Destroy Exception: #{message}"
           errors << Granite::ORM::Error.new(:base, message)
         end
         return false
